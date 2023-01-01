@@ -1,20 +1,20 @@
 package com.example.webrtc.webrtcexample.configs;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 
 @Configuration
 @EnableWebSocket
-public class WebSocketConfig implements WebSocketConfigurer {
+public class SignalingConfiguration implements WebSocketConfigurer {
 
+    @Value( "${allowed.origin:*}" )
+    private String allowedOrigin;
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new WebRtcHandler(), "/webrtc");
+        registry.addHandler(new SignalingHandler(), "/webrtc").setAllowedOrigins(allowedOrigin);
     }
 }
 
